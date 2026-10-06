@@ -1,0 +1,37 @@
+@model IEnumerable<Conta>
+@{
+    ViewData["Title"] = "Contas";
+}
+<div class="cabecalho">
+    <h1>Contas</h1>
+    <a class="botao" asp-action="Create">Abrir conta</a>
+</div>
+
+@if (!Model.Any())
+{
+    <p class="vazio">Nenhuma conta aberta. <a asp-action="Create">Abra a primeira.</a></p>
+}
+else
+{
+    <div class="tabela-wrap">
+        <table>
+            <thead><tr><th>Id</th><th>Agência / Número</th><th>Titular</th><th>Tipo</th><th class="num">Saldo</th><th></th></tr></thead>
+            <tbody>
+            @foreach (var c in Model)
+            {
+                <tr>
+                    <td>@c.Id</td>
+                    <td><a asp-action="Details" asp-route-id="@c.Id">@c.Agencia / @c.Numero</a></td>
+                    <td><a asp-controller="Clientes" asp-action="Details" asp-route-id="@c.ClienteId">@c.Cliente?.Nome</a></td>
+                    <td>@Formato.Tipo(c.Tipo)</td>
+                    <td class="num">@Formato.Moeda(c.Saldo)</td>
+                    <td class="linha-acoes">
+                        <a asp-action="Edit" asp-route-id="@c.Id">Editar</a>
+                        <a asp-action="Delete" asp-route-id="@c.Id" class="perigo">Encerrar</a>
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+}

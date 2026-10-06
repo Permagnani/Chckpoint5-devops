@@ -1,0 +1,38 @@
+@model DashboardViewModel
+@{
+    ViewData["Title"] = "Painel";
+}
+<section class="hero">
+    <p class="hero-saldo">@Formato.Moeda(Model.SaldoTotal)</p>
+    <p class="hero-legenda">sob custódia em @Model.TotalContas @(Model.TotalContas == 1 ? "conta" : "contas") de @Model.TotalClientes @(Model.TotalClientes == 1 ? "cliente" : "clientes")</p>
+    <div class="acoes">
+        <a class="botao" asp-controller="Clientes" asp-action="Create">Cadastrar cliente</a>
+        <a class="botao botao-sec" asp-controller="Contas" asp-action="Create">Abrir conta</a>
+    </div>
+</section>
+
+<h2>Contas abertas recentemente</h2>
+@if (!Model.UltimasContas.Any())
+{
+    <p class="vazio">Nenhuma conta aberta ainda. Cadastre um cliente e abra a primeira conta dele.</p>
+}
+else
+{
+    <div class="tabela-wrap">
+        <table>
+            <thead><tr><th>Conta</th><th>Titular</th><th>Tipo</th><th class="num">Saldo</th><th>Aberta em</th></tr></thead>
+            <tbody>
+            @foreach (var c in Model.UltimasContas)
+            {
+                <tr>
+                    <td><a asp-controller="Contas" asp-action="Details" asp-route-id="@c.Id">@c.Agencia / @c.Numero</a></td>
+                    <td>@c.Cliente?.Nome</td>
+                    <td>@Formato.Tipo(c.Tipo)</td>
+                    <td class="num">@Formato.Moeda(c.Saldo)</td>
+                    <td>@Formato.Data(c.DataAbertura)</td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+}

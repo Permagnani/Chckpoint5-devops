@@ -1,0 +1,45 @@
+@{
+    var controller = ViewContext.RouteData.Values["controller"]?.ToString();
+}
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>@ViewData["Title"] | DimDim</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Public+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body>
+    <header class="topo">
+        <div class="topo-interno">
+            <a class="marca" asp-controller="Home" asp-action="Index" aria-label="DimDim, página inicial">
+                <span class="balao">dim<br />dim</span>
+            </a>
+            <nav class="menu" aria-label="Principal">
+                <a asp-controller="Home" asp-action="Index" class="@(controller == "Home" ? "ativo" : "")">Painel</a>
+                <a asp-controller="Clientes" asp-action="Index" class="@(controller == "Clientes" ? "ativo" : "")">Clientes</a>
+                <a asp-controller="Contas" asp-action="Index" class="@(controller == "Contas" ? "ativo" : "")">Contas</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="conteudo">
+        @if (TempData["Sucesso"] is string sucesso)
+        {
+            <p class="aviso aviso-ok" role="status">@sucesso</p>
+        }
+        @if (TempData["Aviso"] is string aviso)
+        {
+            <p class="aviso aviso-alerta" role="status">@aviso</p>
+        }
+        @RenderBody()
+    </main>
+
+    <footer class="rodape">
+        DimDim, hospedado no Azure App Service com Azure SQL Database e monitorado pelo Application Insights
+    </footer>
+</body>
+</html>

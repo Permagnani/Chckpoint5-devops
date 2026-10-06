@@ -1,0 +1,43 @@
+@model Cliente
+@{
+    ViewData["Title"] = Model.Nome;
+}
+<div class="cabecalho">
+    <h1>@Model.Nome</h1>
+    <div class="acoes">
+        <a class="botao" asp-controller="Contas" asp-action="Create" asp-route-clienteId="@Model.Id">Abrir conta</a>
+        <a class="botao botao-sec" asp-action="Edit" asp-route-id="@Model.Id">Editar</a>
+    </div>
+</div>
+<dl class="ficha">
+    <dt>Id</dt><dd>@Model.Id</dd>
+    <dt>CPF</dt><dd>@Formato.Cpf(Model.Cpf)</dd>
+    <dt>E-mail</dt><dd>@Model.Email</dd>
+    <dt>Telefone</dt><dd>@(Model.Telefone ?? "Não informado")</dd>
+    <dt>Cadastrado em</dt><dd>@Formato.Data(Model.DataCadastro) (UTC)</dd>
+</dl>
+
+<h2>Contas deste cliente</h2>
+@if (!Model.Contas.Any())
+{
+    <p class="vazio">Este cliente ainda não tem contas.</p>
+}
+else
+{
+    <div class="tabela-wrap">
+        <table>
+            <thead><tr><th>Conta</th><th>Tipo</th><th class="num">Saldo</th></tr></thead>
+            <tbody>
+            @foreach (var c in Model.Contas.OrderBy(c => c.Numero))
+            {
+                <tr>
+                    <td><a asp-controller="Contas" asp-action="Details" asp-route-id="@c.Id">@c.Agencia / @c.Numero</a></td>
+                    <td>@Formato.Tipo(c.Tipo)</td>
+                    <td class="num">@Formato.Moeda(c.Saldo)</td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+}
+<p><a asp-action="Index">Voltar para clientes</a></p>

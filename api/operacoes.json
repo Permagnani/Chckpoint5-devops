@@ -1,0 +1,68 @@
+{
+  "descricao": "Operações REST do DimDim (complementares ao front end). Substitua {BASE_URL} por https://app-dimdim-<RM>.azurewebsites.net",
+  "clientes": {
+    "GET_todos": {
+      "metodo": "GET",
+      "url": "{BASE_URL}/api/clientes",
+      "resposta_200": [
+        { "id": 1, "nome": "Ana Souza", "cpf": "12345678901", "email": "ana@dimdim.com", "telefone": "11999990000", "dataCadastro": "2026-10-05T14:00:00Z", "contas": [] }
+      ]
+    },
+    "GET_por_id": {
+      "metodo": "GET",
+      "url": "{BASE_URL}/api/clientes/1",
+      "resposta_200": { "id": 1, "nome": "Ana Souza", "cpf": "12345678901", "email": "ana@dimdim.com", "telefone": "11999990000", "dataCadastro": "2026-10-05T14:00:00Z", "contas": [ { "id": 1, "numero": "48213-7", "agencia": "0001", "tipo": "Corrente", "saldo": 1500.00, "dataAbertura": "2026-10-05T14:05:00Z", "clienteId": 1 } ] }
+    },
+    "POST": {
+      "metodo": "POST",
+      "url": "{BASE_URL}/api/clientes",
+      "headers": { "Content-Type": "application/json" },
+      "body": { "nome": "Ana Souza", "cpf": "12345678901", "email": "ana@dimdim.com", "telefone": "11999990000" },
+      "resposta": "201 Created com o cliente criado"
+    },
+    "PUT": {
+      "metodo": "PUT",
+      "url": "{BASE_URL}/api/clientes/1",
+      "headers": { "Content-Type": "application/json" },
+      "body": { "id": 1, "nome": "Ana Souza Lima", "cpf": "12345678901", "email": "ana.lima@dimdim.com", "telefone": "11988887777" },
+      "resposta": "204 No Content"
+    },
+    "DELETE": {
+      "metodo": "DELETE",
+      "url": "{BASE_URL}/api/clientes/1",
+      "resposta": "204 No Content (as contas do cliente são removidas em cascata)"
+    }
+  },
+  "contas": {
+    "GET_todas": {
+      "metodo": "GET",
+      "url": "{BASE_URL}/api/contas",
+      "resposta_200": [
+        { "id": 1, "numero": "48213-7", "agencia": "0001", "tipo": "Corrente", "saldo": 1500.00, "dataAbertura": "2026-10-05T14:05:00Z", "clienteId": 1, "cliente": null }
+      ]
+    },
+    "GET_por_id": {
+      "metodo": "GET",
+      "url": "{BASE_URL}/api/contas/1"
+    },
+    "POST": {
+      "metodo": "POST",
+      "url": "{BASE_URL}/api/contas",
+      "headers": { "Content-Type": "application/json" },
+      "body": { "numero": "48213-7", "agencia": "0001", "tipo": "Corrente", "saldo": 1500.00, "clienteId": 1 },
+      "resposta": "201 Created com a conta criada"
+    },
+    "PUT": {
+      "metodo": "PUT",
+      "url": "{BASE_URL}/api/contas/1",
+      "headers": { "Content-Type": "application/json" },
+      "body": { "id": 1, "numero": "48213-7", "agencia": "0001", "tipo": "Poupanca", "saldo": 2750.50, "clienteId": 1 },
+      "resposta": "204 No Content"
+    },
+    "DELETE": {
+      "metodo": "DELETE",
+      "url": "{BASE_URL}/api/contas/1",
+      "resposta": "204 No Content"
+    }
+  }
+}

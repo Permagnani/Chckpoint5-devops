@@ -1,0 +1,16 @@
+@model Conta
+@{
+    ViewData["Title"] = "Conta " + Model.Numero;
+}
+<div class="cabecalho">
+    <h1>Conta @Model.Agencia / @Model.Numero</h1>
+    <a class="botao botao-sec" asp-action="Edit" asp-route-id="@Model.Id">Editar</a>
+</div>
+<p class="saldo-destaque">@Formato.Moeda(Model.Saldo)</p>
+<dl class="ficha">
+    <dt>Id</dt><dd>@Model.Id</dd>
+    <dt>Titular</dt><dd><a asp-controller="Clientes" asp-action="Details" asp-route-id="@Model.ClienteId">@Model.Cliente?.Nome</a></dd>
+    <dt>Tipo</dt><dd>@Formato.Tipo(Model.Tipo)</dd>
+    <dt>Aberta em</dt><dd>@Formato.Data(Model.DataAbertura) (UTC)</dd>
+</dl>
+<p><a asp-action="Index">Voltar para contas</a></p>

@@ -1,0 +1,12 @@
+@model Cliente
+@{
+    ViewData["Title"] = "Cadastrar cliente";
+}
+<h1>Cadastrar cliente</h1>
+<form asp-action="Create" method="post" class="formulario">
+    <partial name="_Form" model="Model" />
+    <div class="acoes">
+        <button type="submit" class="botao">Cadastrar cliente</button>
+        <a asp-action="Index" class="botao botao-sec">Cancelar</a>
+    </div>
+</form>

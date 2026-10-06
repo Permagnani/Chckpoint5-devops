@@ -1,0 +1,25 @@
+@model Cliente
+@{
+    ViewData["Title"] = "Excluir cliente";
+}
+<h1>Excluir @Model.Nome?</h1>
+<p class="aviso aviso-alerta">
+    @if (Model.Contas.Any())
+    {
+        <text>As @Model.Contas.Count conta(s) deste cliente também serão excluídas.</text>
+    }
+    else
+    {
+        <text>Esta ação não pode ser desfeita.</text>
+    }
+</p>
+<dl class="ficha">
+    <dt>Id</dt><dd>@Model.Id</dd>
+    <dt>CPF</dt><dd>@Formato.Cpf(Model.Cpf)</dd>
+    <dt>E-mail</dt><dd>@Model.Email</dd>
+</dl>
+<form asp-action="Delete" method="post" class="acoes">
+    <input type="hidden" asp-for="Id" />
+    <button type="submit" class="botao botao-perigo">Excluir cliente</button>
+    <a asp-action="Index" class="botao botao-sec">Cancelar</a>
+</form>

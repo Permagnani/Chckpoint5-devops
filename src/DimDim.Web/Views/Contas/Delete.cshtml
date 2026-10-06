@@ -1,0 +1,16 @@
+@model Conta
+@{
+    ViewData["Title"] = "Encerrar conta";
+}
+<h1>Encerrar a conta @Model.Numero?</h1>
+<p class="aviso aviso-alerta">A conta será removida do banco. Esta ação não pode ser desfeita.</p>
+<dl class="ficha">
+    <dt>Id</dt><dd>@Model.Id</dd>
+    <dt>Titular</dt><dd>@Model.Cliente?.Nome</dd>
+    <dt>Saldo</dt><dd>@Formato.Moeda(Model.Saldo)</dd>
+</dl>
+<form asp-action="Delete" method="post" class="acoes">
+    <input type="hidden" asp-for="Id" />
+    <button type="submit" class="botao botao-perigo">Encerrar conta</button>
+    <a asp-action="Index" class="botao botao-sec">Cancelar</a>
+</form>

@@ -1,0 +1,61 @@
+name: Build e Deploy - DimDim Web App
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'src/**'
+      - '.github/workflows/deploy.yml'
+  workflow_dispatch:
+
+env:
+  DOTNET_VERSION: '8.0.x'
+  PROJECT_PATH: 'src/DimDim.Web/DimDim.Web.csproj'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Instalar .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Restore
+        run: dotnet restore ${{ env.PROJECT_PATH }}
+
+      - name: Build
+        run: dotnet build ${{ env.PROJECT_PATH }} -c Release --no-restore
+
+      - name: Publish
+        run: dotnet publish ${{ env.PROJECT_PATH }} -c Release --no-build -o ./publish
+
+      - name: Guardar artefato
+        uses: actions/upload-artifact@v4
+        with:
+          name: dimdim-web
+          path: ./publish
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: production
+      url: ${{ steps.deploy.outputs.webapp-url }}
+    steps:
+      - name: Baixar artefato
+        uses: actions/download-artifact@v4
+        with:
+          name: dimdim-web
+          path: ./publish
+
+      - name: Deploy no Azure Web App
+        id: deploy
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: ${{ vars.AZURE_WEBAPP_NAME }}
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          package: ./publish
